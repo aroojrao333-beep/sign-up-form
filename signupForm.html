@@ -11,7 +11,6 @@
       margin: auto;
       padding: 20px;
       border-radius: 10px;
-      box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
     }
     .signupHeading { text-align: center; }
     .gender-options { display: flex; gap: 15px; margin-bottom: 15px; }
@@ -58,9 +57,6 @@
       <label>Email</label>
       <input type="email" name="email" placeholder="Enter Email" required />
 
-      <label>Confirm Email</label>
-      <input type="text" name="confirmEmail" placeholder="Confirm Email" />
-
       <label>Password</label>
       <input type="text" name="password" placeholder="Enter Password" />
 
@@ -89,7 +85,6 @@
         <th>Last Name</th>
         <th>Password</th>
         <th>Email</th>
-        <th>Confirm Email</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -109,7 +104,7 @@
       const lastName = formData.get("lastName");
       const password = formData.get("password");
       const email = formData.get("email");
-      const confirmEmail = formData.get("confirmEmail");
+
 
       if (editIndex === null) {
         // Add new row
@@ -119,7 +114,6 @@
             <td>${lastName}</td>
             <td>${password}</td>
             <td>${email}</td>
-            <td>${confirmEmail}</td>
             <td>
               <button class="action-btn edit-btn">Edit</button>
               <button class="action-btn delete-btn">Delete</button>
@@ -134,7 +128,6 @@
         row.cells[1].textContent = lastName;
         row.cells[2].textContent = password;
         row.cells[3].textContent = email;
-        row.cells[4].textContent = confirmEmail;
         editIndex = null;
       }
 
@@ -154,7 +147,6 @@
         form.lastName.value = row.cells[1].textContent;
         form.password.value = row.cells[2].textContent;
         form.email.value = row.cells[3].textContent;
-        form.confirmEmail.value = row.cells[4].textContent;
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
     });
