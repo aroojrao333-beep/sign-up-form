@@ -1,0 +1,102 @@
+table assignment
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Table Assignment</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f9fa;
+      padding: 40px;
+      display: flex;     
+      /* Flex ek layout system hai CSS mein elements ko row ya column mein easily arrange */
+
+      justify-content: center;
+      /* puri body ko center ma show karwnaay k liye justify-content: center ki hai flex k bagair justify-content:  use nai kar skatay is lea flex lagaya hai display;; */
+    }
+
+    table {
+      border-collapse: collapse;
+      /* table k border ko merge karta hai agr nai karo gi tow gap show ho ga border ma */
+      width: 80%;
+      max-width: 800px;
+      background: white;
+      border: 2px solid #333;
+      text-align: center;
+    }
+
+    th, td {
+      border: 2px solid #333;
+      padding: 15px;
+      font-size: 18px;
+    }
+
+    /* Title row styling */
+    .title-row th {
+      background: #eaeaea;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    
+    }
+
+    /* Left column (Timings, Schedule) */
+    .left-col {
+      font-weight: bold;
+      /* bold say mota mota show hota hai text */
+      background: #f4f4f4;
+      width: 120px;
+    }
+  </style>
+</head>
+<body>
+  <table>
+    <!-- Title Row -->
+    <tr class="title-row">
+      <th colspan="6">Title</th>
+      <!-- is liye 6 diye hn colspan kun k tm nay apnay table ma total 6 col banaye hn -->
+      <!-- aik timings wali jo left most heading hai wo or baki 5 Mon say friday tk -->
+      <!-- puray 6 is lea diye ta k title row ma koi col naa ho, title row me tum sirf ek bada cell chahte ho jo puri row ki width le le -->
+    </tr>
+
+    <!-- Timings Section -->
+    <tr>
+      <td class="left-col" rowspan="2">Timings</td>
+      <!-- is ma kun k hm nay timings ki heading ma 2 rows li hn tow is lea hm nay rowSpan 2 kiya hai -->
+      <td>Monday</td>
+      <td>Tuesday</td>
+      <td>Wednesday</td>
+      <td>Thursday</td>
+      <td>Friday</td>
+    </tr>
+    <tr>
+      <td>11:00</td>
+      <td>13:00</td>
+      <td>10:00</td>
+      <td>—</td>
+      <td>—</td>
+    </tr>
+
+    <!-- Schedule Section -->
+    <tr>
+      <td class="left-col" rowspan="2">Schedule</td>
+      <!-- is ma bhi kun k 2 rows ko merge kiya hai is lea rowspan 2 kiya hai -->
+      <td>Monday</td>
+      <td>Tuesday</td>
+      <td>Wednesday</td>
+      <td>Thursday</td>
+      <td>Friday</td>
+    </tr>
+    <tr> <!-- yeh table ki row hota hai horizantal data row hota hai -->
+      <td>10:00</td><!-- is row ma jitnay col show karwanay wo is ma hotay hn td tag ma -->
+      <td>12:00</td>
+      <td>04:00</td>
+      <td>—</td>
+      <td>05:00</td>
+    </tr>
+  </table>
+</body>
+</html>
