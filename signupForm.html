@@ -1,15 +1,11 @@
-signup Form
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Ye line responsive banati hai — matlab mobile, tablet aur desktop pr theek size mein dikhai de -->
-  <title>Signup Form </title><!--Browser tab ka title set kar diya "Signup Form".-->
+  <title>Signup Form</title>
   <style>
-     .form-container {
+    .form-container {
       background: rgb(133, 227, 228);
       max-width: 500px;
       margin: auto;
@@ -17,29 +13,11 @@ signup Form
       border-radius: 10px;
       box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
     }
-    .signupHeading{
-        text-align: center;
-    }
-    .gender-options {
-      display: flex;
-      gap: 15px;
-      margin-bottom: 15px;
-    }
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-    }
-
-    input, button {
-      margin: 5px;
-      padding: 8px;
-    }
-
+    .signupHeading { text-align: center; }
+    .gender-options { display: flex; gap: 15px; margin-bottom: 15px; }
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    form { display: flex; flex-direction: column; }
+    input, button { margin: 5px; padding: 8px; }
     table {
       width: 100%;
       margin-top: 30px;
@@ -49,19 +27,21 @@ signup Form
       overflow: hidden;
       box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
     }
-
     th, td {
       border: 1px solid #ccc;
       padding: 10px;
       text-align: left;
     }
-    /* Table ke har cell (th aur td) ka border ban gaya, andar 10px space aur text left align ho gaya. */
-
-    th {
-      background: #f4f4f4; 
-        /* table ka header hota hai th tag (ie First Name,Last Name) */
-        /* halka grey background diya hai color */
+    th { background: #f4f4f4; }
+    .action-btn {
+      margin: 2px;
+      padding: 5px 10px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
     }
+    .edit-btn { background: #ffc107; }
+    .delete-btn { background: #dc3545; color: white; }
   </style>
 </head>
 <body>
@@ -76,30 +56,29 @@ signup Form
       <input type="text" name="lastName" placeholder="Enter Last Name" required />
 
       <label>Email</label>
-      <input type="email" name="email" placeholder="Enter Email" required /><!--required lagane se input empty hone par submit nahi hoga.-->
-       <label>Confirm Email</label>
-      <input type="text" name="confirm email" placeholder="confirm email"  />
-      
+      <input type="email" name="email" placeholder="Enter Email" required />
+
+      <label>Confirm Email</label>
+      <input type="text" name="confirmEmail" placeholder="Confirm Email" />
+
       <label>Password</label>
-      <input type="text" name="password" placeholder="Enter password"  />
+      <input type="text" name="password" placeholder="Enter Password" />
 
       <label>Phone</label>
-      <input type="text" name="Phone" placeholder="Enter Phone Number"  />
-      
+      <input type="text" name="phone" placeholder="Enter Phone Number" />
 
       <label>Age</label>
-      <input type="number" name="age" placeholder="Enter Age"  />
+      <input type="number" name="age" placeholder="Enter Age" />
 
       <label>Gender</label>
       <div class="gender-options">
-        <label><input type="radio" name="gender" value="Male"  /> Male</label>
+        <label><input type="radio" name="gender" value="Male" /> Male</label>
         <label><input type="radio" name="gender" value="Female" /> Female</label>
       </div>
 
       <button type="submit">Submit</button>
     </form>
   </div>
-  <!--yahn aik form banaya gaya hai jismein 3 fields hai-->
 
   <!-- Table -->
   <h2 class="signupHeading">Display Users Data</h2>
@@ -110,73 +89,75 @@ signup Form
         <th>Last Name</th>
         <th>Password</th>
         <th>Email</th>
-        <th>confirm Email</th>
+        <th>Confirm Email</th>
+        <th>Actions</th>
       </tr>
     </thead>
-    <!-- Ye table ka header hai jisme column ke naam likhe hain.<thead> -->
-    <tbody id="tableBody"> <!-- table ki boday ko hm nay id di hai tableBody,id key say id daytay hn -->
-      <!-- yhn data rows add hon gi -->
-    </tbody>
+    <tbody id="tableBody"></tbody>
   </table>
 
-  <script>//yeh script tag hai jis ma javascript likhtay hn 
-    // Access the form and table body
-    const form = document.getElementById("myForm"); 
-    const tableBody = document.getElementById("tableBody");//jo hm nay id di thi line no 105 ma usay ab get kar rhay hn getElementById say
-    //id uinvue hoti hai yehi id ab ma kahin or nai day sakti 
-    //class same ho sakti hai 
+  <script>
+    const form = document.getElementById("myForm");
+    const tableBody = document.getElementById("tableBody");
+    let editIndex = null; // track row being edited
 
-    // Listen for form submit
-    form.addEventListener("submit", function (event) {//addeventlistenrer method hai jo kisi element (yahan form) ke saath ek event listener attach karta hai.
-        ///yhn sumit ka matlab hai jab form ka submit button press hoga (ya enter key dabai jaayegi
-       // or jb submit button click ho jaye ga to callback function chalay ga jo k function (event) { is k andar define hai
-      event.preventDefault(); // Prevent page refresh
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
 
-      // Get form data
       const formData = new FormData(form);
-      //FormData object se form ke sare inputs ki values nikal lenge.
-
-      // Extract values
-    //   forrm ke inputs ki values ko alag variables mein store kiya
       const firstName = formData.get("firstName");
       const lastName = formData.get("lastName");
-      const password= formData.get("password");
+      const password = formData.get("password");
       const email = formData.get("email");
-      const confirmEmail= formData.get("confirm email");
+      const confirmEmail = formData.get("confirmEmail");
 
+      if (editIndex === null) {
+        // Add new row
+        const newRow = `
+          <tr>
+            <td>${firstName}</td>
+            <td>${lastName}</td>
+            <td>${password}</td>
+            <td>${email}</td>
+            <td>${confirmEmail}</td>
+            <td>
+              <button class="action-btn edit-btn">Edit</button>
+              <button class="action-btn delete-btn">Delete</button>
+            </td>
+          </tr>
+        `;
+        tableBody.insertAdjacentHTML("beforeend", newRow);
+      } else {
+        // Update existing row
+        const row = tableBody.rows[editIndex];
+        row.cells[0].textContent = firstName;
+        row.cells[1].textContent = lastName;
+        row.cells[2].textContent = password;
+        row.cells[3].textContent = email;
+        row.cells[4].textContent = confirmEmail;
+        editIndex = null;
+      }
 
-      // Generate HTML for new row
-      const newRow = `
-        <tr>
-          <td>${firstName}</td>
-          <td>${lastName}</td>
-          <td>${password}</td>
-          <td>${email}</td>
-      
-        </tr>
-      `;
-     // aik new table row banai jisme user ka naam aur email inject kiya.
+      form.reset();
+    });
 
-      // Append new row to table body
-      tableBody.insertAdjacentHTML("beforeend", newRow);
-      //Ye row ko tableBody ke end mein insert kar deta hai.
+    // Event delegation for edit & delete
+    tableBody.addEventListener("click", function (e) {
+      if (e.target.classList.contains("delete-btn")) {
+        e.target.closest("tr").remove();
+      }
 
-      // Reset form after submit
-      form.reset();//form ko reset kar day ga like data erase kar day ga
-   
-     const editableContent = document.getElementById('editableContent');
-     const editButton = document.getElementById('editButton');
-     const saveButton = document.getElementById('saveButton');
-
-     editButton.style.display = 'none'; // show edit button
-     saveButton.style.display = 'inline-block'; // Show save button
-     <div id="container">
-     <p id="edit"><b> Click "Edit" button to edit content. </b></p>
-     <button type="submit" id="edit-button">Edit</button>
-     <button type="submit" id="end-editing">Done</button>
-      </div>
- });
-
+      if (e.target.classList.contains("edit-btn")) {
+        const row = e.target.closest("tr");
+        editIndex = row.rowIndex - 1; // adjust index
+        form.firstName.value = row.cells[0].textContent;
+        form.lastName.value = row.cells[1].textContent;
+        form.password.value = row.cells[2].textContent;
+        form.email.value = row.cells[3].textContent;
+        form.confirmEmail.value = row.cells[4].textContent;
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    });
   </script>
 </body>
 </html>
